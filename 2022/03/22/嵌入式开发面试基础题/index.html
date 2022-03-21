@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>桃之夭夭 灼灼其华 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">桃之夭夭 灼灼其华</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            嵌入式开发面试基础题
+        </div>
+        <div class="post-meta">
+            2022-03-22
+        </div>
+    
+
+    <div class="post-md">
+        <p>来源：</p>
+<p><a target="_blank" rel="noopener" href="https://space.bilibili.com/503659203/video">https://space.bilibili.com/503659203/video</a></p>
+<p>1.嵌入式系统经常要用到无限循环，请问如何用C编写死循环？</p>
+<pre><code class="c">while(1)&#123;&#125;
+//或者
+for(;;)
+</code></pre>
+<p>2.请问程序中局部变量、全局变量、动态申请的数据分别存储在哪里？</p>
+<pre><code class="c">/*
+    局部变量存在于 栈区
+    全局变量存在与 静态区
+    动态申请数据存在与 堆区
+*/
+</code></pre>
+<p>3.请问关键字const有什么含义？</p>
+<pre><code class="c">/*
+1、只读
+2、使用关键字 const 也许能产生更紧凑的代码
+3、使编译器很自然地保护那些不希望被改变的参数，防止被无意的代码修改
+*/
+</code></pre>
+<p>4.请问什么是预编译，何时需要预编译？</p>
+<pre><code class="c">/*
+总是使用不经常改动的大型代码体；程序由多个模块组成，所以模块都使用一组标准的包含文件和相同的编译选项。在这种情况下，可以将所有包含文件预编译为一个预编译头。
+
+预编译指令指示了在程序正式编译前就由编译器进行的操作，可以放在程序中的任何位置。
+*/
+</code></pre>
+<p>5.请问局部变量能否和全局变量重名？</p>
+<pre><code class="c">/*
+能，局部会屏蔽全局。
+局部变量可以与全局变量同名，在函数内引用这个变量时，会用到同名的局部变量，而不会用到全局变量。
+*/
+</code></pre>
+<p>6.请问引用与指针有什么区别？</p>
+<pre><code class="c">/*
+1、引用必须被初始化，指针不必
+2、引用初始化以后不能被改变，指针可以改变所指的对象
+3、不存在指向空值的引用，但是存在指向空值的指针
+*/
+</code></pre>
+<p>7.一个32位的机器，该机器的指针是多少位？</p>
+<pre><code class="c">/*
+指针是多少位只要看地址总线的位数就行了。80386以后的机子都是32的数据总线。所以指针的位数就是4个字节了。
+CPU通过地址总线，在内存中找到数字3的地址；通过控制总线知道该操作是读还是写；然后通过数据总线，把数字3传输到CPU中。
+*/
+</code></pre>
+<p>8.请问下面代码中有什么问题？</p>
+<pre><code class="c">int main()&#123;
+    char a;
+    char *str=&amp;a;
+    strcpy(str,&quot;hello&quot;);
+    printf(str);
+    return 0;
+&#125;
+/*
+没有位str分配内存空间，将会发生异常，问题出现在将一个字符串复制进一个字符变量变量指针所指的地址。虽然可以正确输出结果，但因为越界进行内在读写而导致程序崩溃。
+*/
+</code></pre>
+<p>9.请问在C语言中，关键字static有哪三个明显的作用?</p>
+<pre><code class="c">/*
+1、在函数体，一个被声明为静态的变量在这一函数被调用过程中维持其值不变
+2、在模块内(但在函数体外)，一个被声明为静态的变量可以被模块内所用函数访问，但不能被模块外其他函数访问，它是一个本地的全局变量
+3、在模块内，一个被声明为静态的函数只可被这一模块内的其他函数调用。那就是，这个函数被限制在声明他的模块的本地范围内使用。
+*/
+</code></pre>
+<p>10.请写一个“标准”宏 MIN ,这个宏输入两个参数并返回较小的一个。</p>
+<pre><code class="c">#define MIN(A,B) ((A) &lt;= (B)?(A):(B))
+</code></pre>
+<p>11.请用变量a给出下面的定义</p>
+<blockquote>
+<p>1、一个整型数</p>
+<p>2、一个指向整型数的指针</p>
+</blockquote>
+<pre><code class="c">// 1
+        int a;
+// 2
+        int *a;
+</code></pre>
+<p>12.请用变量a给出下面的定义：</p>
+<blockquote>
+<p>一个指向指针的指针，它指向的指针是指向一个整型数</p>
+</blockquote>
+<pre><code class="c">int **a;
+</code></pre>
+<p>13.请用变量a给出下面的定义:</p>
+<blockquote>
+<p>1、一个有十个整型数的数组</p>
+<p>2、一个有十个指针的数组，该指针是指向一个整型数的数组</p>
+</blockquote>
+<pre><code class="c">// 1
+        int a[10];
+// 2
+        int *a[10];
+</code></pre>
+<p>14.请使用C语言中的#define来定义一个常量来表示一年有多少秒？</p>
+<pre><code class="c">#define SECONDS_PER_YEAR (60*60*24*365) UL
+
+//一点要加括号，宏定义只是替换，不加括号会出错
+//UL 防止计算值过大
+</code></pre>
+<p>15.请问进程和线程有什么区别?</p>
+<pre><code class="c">/*
+进程：资源分配的最小单位
+线程：程序运行的最小单位
+1、进程有自己的地址空间，当一个进程建立，系统就会为它分配地址空间，而线程是共享进行的数据，使用相同的地址空间；
+2、一个进程中可包含多个线程，一个线程死掉不会影响其他进程，一个线程死掉，整个进程都死了；
+3、线程直接通信更加方便，同一进程下的线程共享全局变量，静态变量等，而进程通信需要以IPC防止进行。
+*/
+</code></pre>
+<p>16.请问下面代码有什么问题？</p>
+<pre><code class="c">char *s1 = &quot;hello&quot;;
+char *s2 = &quot;world&quot;;
+char *s3 = strcat(s1,s2);
+
+//s1 s2都是常量指针，其内容不可修改，运行就会产生段错误
+</code></pre>
+<p>17.请问预处理器标识#error的目的是什么？</p>
+<pre><code class="c">/*
+编译程序时，只要遇到 #error 就会跳出一个编译错误，既然是编译错误，要它干嘛呢？其目的就是保证程序是按照你所设想的那样进行编译的。
+下面举个例子：
+程序中往往有很多的预处理指令
+#ifdef XXX
+...
+#else
+#endif
+当程序比较大时，往往有些宏定义是在外部指定的（如makefile），或是在系统头文件中指定的，当你不太确定当前是否定义了 XXX 时，就可以改成如下这样进行编译：
+#ifdef XXX
+...
+#error &quot;XXX has been defined&quot;
+#else
+#endif
+这样,如果编译时出现错误,输出了XXX has been defined,表明宏XXX已经被定义了
+*/
+</code></pre>
+<p>18.请解释以下三个变量声明的含义:</p>
+<pre><code class="c">//1
+        int const *p;
+//2
+        int * const p;
+//3
+        int const *p const;
+/*
+1、int const *p 表示指针p指向的值不能改变，而p(即地址)是可以改变的
+2、int * const p 表示指针p指向的值能改变，而p(即地址)是不可以改变的
+3、int const *p const 表示 *p 、 p 都不能改变，表示只读
+*/
+</code></pre>
+<p>19.请简述OSI七层模型和TCP&#x2F;IP模型的组成</p>
+<pre><code class="c">/*
+    OSI           TCP/IP
+    应用层            应用层
+    表示层
+    会话层
+    传输层            传输层
+    网络层            网络层
+    数据链路层    数据链路层
+    物理层            物理层
+*/
+</code></pre>
+<p>20.请简述TCP&#x2F;IP协议簇包含哪些分段，每一层有哪些常用协议？</p>
+<pre><code class="c">/*
+应用层:    http dns telnet ftp tftp
+传输层：    tcp UDP
+网络层:    IP ICMP ARP RARP
+数据链路层： ethnet ethnet2 802.3 PPP hdlc 
+物理层：    比特流
+/*
+</code></pre>
+<p>21.请问TCP与UDP协议有哪些区别？</p>
+<pre><code class="c">/*
+连接性
+TCP是面向连接的协议，在收发数据前必须和对方建立可靠的连接，建立连接的3次握手、断开连接的4次挥手，为数据传输打下可靠基础;UDP是一个面向无连接的协议，数据传输前，源端和终端不建立连接，发送端尽可能快的将数据扔到网络上，接收端从消息队列中读取消息段。
+
+可靠性
+TCP提供可靠交付的服务，传输过程中采用许多方法保证在连接上提供可靠的传输服务，如编号与确认、流量控制、计时器等，确保数据无差错，不丢失，不重复且按序到达;UDP使用尽可能最大努力交付，但不保证可靠交付。
+
+报文首部
+TCP报文首部有20个字节，额外开销大;UDP报文首部只有8个字节，标题短，开销小。
+TCP协议面向字节流，将应用层报文看成一串无结构的字节流，分解为多个TCP报文段传输后，在目的站重新装配;UDP协议面向报文，不拆分应用层报文，只保留报文边界，一次发送一个报文，接收方去除报文首部后，原封不动将报文交给上层应用。
+
+吞吐量控制
+TCP拥塞控制、流量控制、重传机制、滑动窗口等机制保证传输质量;UDP没有。
+
+双工性
+TCP只能点对点全双工通信;UDP支持一对一、一对多、多对一和多对多的交互通信。
+
+*/
+</code></pre>
+<p>22.请写出strcpy函数的代码</p>
+<pre><code class="c">//微软
+char * strcpy(char * dst, const char * src)
+&#123;
+        char * cp = dst;
+ 
+        while( *cp++ = *src++ )
+                ;               /* Copy src over dst */
+ 
+        return( dst );
+&#125;
+//检测指针有效性
+char * strcpy(char *dst,const char *src)   //[1]
+&#123;
+    assert(dst != NULL &amp;&amp; src != NULL);    //[2]
+ 
+    char *ret = dst;  //[3]
+ 
+    while ((*dst++=*src++)!=&#39;\0&#39;); //[4]
+ 
+    return ret;
+&#125;
+//考虑内存重叠
+
+char * strcpy(char *dst,const char *src)
+&#123;
+    assert(dst != NULL &amp;&amp; src != NULL);
+ 
+    char *ret = dst;
+ 
+    my_memcpy(dst, src, strlen(src)+1);
+ 
+    return ret;
+&#125;
+
+char *my_memcpy(char *dst, const char* src, int cnt)
+&#123;
+    assert(dst != NULL &amp;&amp; src != NULL);
+ 
+    char *ret = dst; 
+ 
+    if (dst &gt;= src &amp;&amp; dst &lt;= src+cnt-1) //内存重叠，从高地址开始复制
+    &#123;
+        dst = dst+cnt-1;
+        src = src+cnt-1;
+        while (cnt--)
+            *dst-- = *src--;
+    &#125;
+    else    //正常情况，从低地址开始复制
+    &#123;
+        while (cnt--)
+            *dst++ = *src++;
+    &#125;
+    
+    return ret;
+&#125;
+</code></pre>
+<p>23.请问下面的代码有什么问题？</p>
+<pre><code class="c">void test1()
+&#123;
+    char string[10];
+    char str1 = &quot;0123456789&quot;;
+    strcpy(string,str1);
+&#125;
+//字符串str1的末尾是以&#39;\0&#39;结尾的，所有它的长度是11，超过了string长度
+</code></pre>
+<p>24.请简述嵌入式系统的定义和发展的四个阶段？</p>
+<pre><code class="c">/*
+定义：以应用为中心，以计算机技术为基础，软硬件可裁剪，适应应用系统对功能、可靠性、成本、体积、功耗严格要求的专用计算机系统。
+四个阶段：无操作系统阶段、简单操作系统阶段、实时操作系统阶段、面向Internet阶段。
+*/
+</code></pre>
+<p>25.请简述嵌入式系统的组成？</p>
+<pre><code class="c">//软件层、中间层、系统软件层和应用软件层
+</code></pre>
+<p>26.如何引用一个已经定义过的全局变量？</p>
+<pre><code class="c">//可以用引用头文件的方式，也可以用extern关键字
+</code></pre>
+<p>27.全局变量可不可以定义在可被多个 .c 文件包含的头文件中？</p>
+<pre><code class="c">//可以，在不同的C文件中以 static 形式在声明同名全局变量
+</code></pre>
+<p>28.请问堆栈溢出一般是由什么原因导致的？</p>
+<pre><code class="c">//没有回收垃圾资源
+</code></pre>
+<p>29.请问 队列 和 栈 有什么区别？</p>
+<pre><code class="c">//队列先进先出 栈后进后出
+</code></pre>
+<p>30.请问Internet采用哪种网络协议？该协议的主要层次结构？</p>
+<pre><code class="c">//  TCP/IP协议
+//  应用层-传输层-网络层-数据链路层-物理层
+</code></pre>
+<p>31.请问Internet物理地址和IP地址转换采用什么协议？</p>
+<pre><code class="c">//ARP(Address Resolution Protocol)地址解析协议
+</code></pre>
+<p>32.请问IP地址的编码分为哪两个部分？</p>
+<pre><code class="c">//网络号(net-id) 主机号(host-id)
+</code></pre>
+<p>33.从在浏览器地址栏中输入百度网址 <a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a> 到看到百度首页，这个过程中间经历了什么？</p>
+<pre><code class="c">/*
+1、浏览器获取到域名
+2、浏览器将域名发送给DNS域名系统，请求解析
+3、DNS解析域名得到相应IP，返回给浏览器
+4、客户端浏览器根据IP向服务器发起TCP三次握手，建立TCP连接
+5、浏览器向服务器发送HTTP请求
+6、服务器通过HTTP响应向浏览器返回百度首页文件
+7、释放TCP连接
+8、浏览器解析HTML文件，页面渲染
+*/
+</code></pre>
+<p>34.从在浏览器地址栏中输入百度网址 <a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a> 到看到百度首页，这个过程中间涉及到哪些网络协议？</p>
+<pre><code class="c">/*
+1、应用层：HTTP DNS HTTPS
+2、传输层：TCP UDP
+3、网络层：IP ARP
+*/
+</code></pre>
+<p>35.请写出下列代码的输出内容</p>
+<pre><code class="c">#include&quot;stdio.h&quot;
+main()&#123;
+    int a,b,c,d;
+    a = 10;
+    b = a++;
+    c = ++a;
+    d = 10*a++;
+    printf(&quot;b,c,d:%d,%d,%d&quot;,b,c,d);
+    return 0;
+&#125;
+// b,c,d:10,12,120
+</code></pre>
+<p>36.请问下面的代码有什么问题？</p>
+<pre><code class="c">void getmemory(char *p)
+&#123;
+    p = (char *)malloc(100);
+    strcpy(p,&quot;hello world&quot;);
+&#125;
+int main()
+&#123;
+    char *str = NULL;
+    getmemory(str);
+    printf(&quot;%s/n&quot;,str);
+    free(str);
+    
+    return 0;
+&#125;
+//程序崩溃，getmemory中的malloc不能返回动态内存，free()对str操作很危险
+</code></pre>
+<p>37.请问什么是单片机？单片机与微型计算机相比，具有哪些特点？</p>
+<pre><code class="c">/*
+单片机是在一块集成电路上把 CPU、存储器、定时器/计数器 及多种形式的I/O接口集成在一起而构成的微型计算机。
+特点：
+1、单片机的程序存储器和数据存储器是分工的，前者为ROM，后者为RAM
+2、采用面向控制的指令系统，控制功能强
+3、多样化的I/O接口，多功能的I/O引脚
+4、产品系列齐全，功能扩展性强
+*/
+</code></pre>
+<p>38.请解释名词：</p>
+<blockquote>
+<p>时钟周期、状态周期、机器周期、指令周期</p>
+</blockquote>
+<pre><code class="c">/*
+1、时钟周期：也称为振荡周期，定义为时钟频率的倒数。时钟周期是计算机中最基本的、最小的时间单位。
+2、状态周期：它是时钟周期的两倍
+3、机器周期：单片机的基本操作周期，在一个操作周期内，单片机完成一项基本操作，如取指令、存储器读写等。它由12个时钟周期(6个状态周期)组成。
+4、指令周期：它是指CPU执行一条指令所需要的时间。一般一个指令周期含有1-4个机器周期
+*/
+</code></pre>
+<p>39.请简述你对单片机空闲与掉电模式的了解？</p>
+<pre><code class="c">/*
+1、空闲模式：
+    除CPU处于休眠状态之外，其余硬件全部处于活动状态
+2、掉电模式：
+    也称为休眠模式，外部晶振停振，CPU、定时器、串口全部停止工作，只有外部中断继续工作。
+*/
+</code></pre>
+<p>40.请问8051单片机内部包含哪些主要逻辑部件?</p>
+<pre><code class="c">/*
+1、8位CPU
+2、4KB的片内程序存储器ROM，可寻址64KB程序存储器和64KB外部数据存储器
+3、128 Byte 内部RAM
+4、21 个SFR
+5、4个8位并行I/O口(共32位I/O线)
+6、一个全双工的异步串行口
+7、两个16位定时器/计数器
+8、5个中断源，两个中断优先级
+9、内部时钟发生器
+*/
+</code></pre>
+<p>41.请简述51单片机串行口的结构</p>
+<pre><code class="c">/*
+51单片机串行口是一个可编程全双工的通信接口，具有UART的全部功能，能同时进行数据的发送和接收。
+串行口主要由两个独立的SBUF(串行数据缓冲寄存器)和发送控制器、接收控制器、输入移位寄存器以及若干控制门电路组成。
+*/
+</code></pre>
+<p>42.请问STC89C51单片机的时钟引脚是哪两个？时钟方式有哪些？</p>
+<pre><code class="c">/*
+时钟引脚：XTAL1(19脚) XTAL2(18脚)
+XTAL1为片内振荡电路的输入端，XTAL2为片内振荡电路的输出端
+
+两种时钟方式：
+1、片内时钟振荡方式，需要在两个脚外接石英晶体和振荡电容，振荡电容的值一般取10p~30p
+2、外部时钟方式,将XTAL1接地，外部时钟信号从XTAL2脚输入
+*/
+</code></pre>
+<p>43.请问STC89C51单片机的编程控制引脚有哪些？</p>
+<pre><code class="c">/*
+1、RET：单片机复位引脚
+2、PSEN：程序存储器允许输出控制端
+3、ALE/RPOG：在单片机扩展外部RAM时，ALE用于控制把P0口的输出低8位地址送锁存器锁存起来，以实现地址和数据的隔离。
+4、EA/Vpp:EA接高电平时，单片机读取内部程序存储器；EA接低电平时，单片机直接读取外部ROM。
+*/
+</code></pre>
+<p>44.请简述你对STC89C51单片机I&#x2F;O引脚：P0,P1,P2,P3的认识</p>
+<pre><code class="c">/*
+1、P0口为双向8位三态 I / O口 ，它既可作为通用I/O口，又可作为外部扩展时的数据 总线 及低8位地址总线的分时复用口。作为通用I/O口时，输出数据可以得到锁存，不需外接专用锁存器；输入数据可以得到缓冲，增加了数据输入的可靠性。每个引脚可驱动8个TTL负载。
+2、P1口为8位准双向I/O口，内部具有 上拉电阻 ，一般作通用I/O口使用，它的每一位都可以分别定义为输入线或输出线，作为输入时，锁存器必须置1。每个引脚可驱动4个TTL负载。
+3、P2口为8位准双向I/O口，内部具有上拉电阻，可直接连接外部I/O设备。它与地址总线高8位复用，可驱动4个TTL负载。一般作为外部扩展时的高8位地址总线使用。
+4、P3口为8位准双向I/O口，内部具有上拉电阻，它是双功能复用口，每个引脚可驱动4个TTL负载。作为通用I/O口时，功能与P1口相同，常用第二功能。作为第二功能使用时，各位的作用见本站（单片机之家）其它内容。
+*/
+</code></pre>
+<p>45.请问单片机有哪几个特殊功能寄存器？各在单片机的哪些功能部件中？</p>
+<pre><code class="c">/*
+8051内部有21个特殊功能，在物理上是分散在片内各功能部件中，在数学上把它们组织在内部数据存储器地址空间80H~FFH中，以便能使用统一的直接寻址方式来访问。
+(1)CPU：ACC、B、PSW、SP、DPTR(由DPL和DPH两个8位组成);
+
+(2)中断系统：IP、IE;
+
+(3)定时器/计数器：TMOD、TCOM、TL0、TH0、TL1、TH1;
+
+(4)并行I/O口：P0、P1、P2、P3;
+
+(5) 串行口：SCON、SBUF、PCON。
+*/
+</code></pre>
+<p>46.请问51单片机如何模拟I2C总线通信？</p>
+<pre><code class="c">/*
+单片机模拟I2C总线通信，因为许多单片机没有I2C总线接口，如51单片机，但可以在单片机应用系统中通过软件模拟I2C总线的工作时序，在使用时，只需要正确调用各个函数就能方便地扩展I2C总线接口器件。
+关键程序:
+总线初始化、启动信号、应答信号、停止信号、写一个字节、读一个字节
+*/
+</code></pre>
+<p>47.请简述数码管的显示原理？</p>
+<pre><code class="c">/*
+电路方面有共阴极和共阳极之分，让数码管显示不同的数字就是先定义一个保存16进制数的数组，然后在程序中把这个16进制数赋值给相应的引脚。(16进制---8bit---8个引脚)
+*/
+</code></pre>
+<p>48.请问什么是看门狗？</p>
+<pre><code class="c">/*
+在由单片机构成的微型计算机系统中，由于单片机的工作常常会受到来自外界电磁场的干扰，造成各种寄存器和内存的数据混乱，会导致程序指针错误，不在程序区，取出错误的程序指令等，都有可能会陷入死循环，程序的正常运行被打断，由单片机控制的系统无法继续正常工作，导致整个系统的陷入停滞状态，发生不可预料的后果。
+看门狗，又叫 watchdog，从本质上来说就是一个定时器电路，一般有一个输入和一个输出，其中输入叫做喂狗，输出一般连接到另外一个部分的复位端，一般是连接到单片机。 看门狗的功能是定期的查看芯片内部的情况，一旦发生错误就向芯片发出重启信号。看门狗命令在程序的中断中拥有最高的优先级。
+*/
+</code></pre>
+<p>49.请简述WatchDog的工作原理？</p>
+<pre><code class="c">/*
+看门狗有两个重要信号：时钟输入和复位输出
+电路工作时，CPU送出时钟信号给看门狗，即喂狗。
+如果系统出现故障，CPU无法送出连续的时钟信号，看门狗即输出复位信号给CPU，复位系统。
+*/
+</code></pre>
+<p>50.请简述A&#x2F;D电路的组成和工作原理？</p>
+<pre><code class="c">/*
+组成：采样、保持、量化、编码
+原理：由于模拟信号在时间上是连续信号，而数学信号在时间上是离散
+信号，A/D转换首先要按照奈奎斯特采样定律对模拟信号进行采样；
+由于数字信号在数值上是不连续的，数字信号的取值只有有限个数
+值，因此需要对采样后的数据进行量化，使其量化到有效电平上,
+编码就是对量化后的数值进行多进制到二进制的转换。
+*/
+</code></pre>
+<p>51.请问ADC和DAC的实现各有哪些方法</p>
+<pre><code class="c">/*
+DAC:
+权电阻网络D/A转换、倒梯形网络D/A转换、权电流D/A转换、权电容D/A转换、开关树形D/A转换
+ADC:
+并联比较型A/D转换、反馈比较型A/D转换、双积分型A/D转换、V-F变换型A/D转换
+*/
+</code></pre>
+<p>52.请解释什么是寻址方式？</p>
+<pre><code class="c">/*
+寻找指令中操作数或操作数所在地址的方式。也就是如何找到存放操作数的地址，把操作数提取出来的方法。
+*/
+</code></pre>
+<p>53.请解释什么叫堆栈？</p>
+<pre><code class="c">/*
+堆栈是一种数据结构，而且是一种数据项按序排列的数据结构，只能在一端(称为栈顶(top))对数据项进行插入和删除。在单片机应用中，堆栈是个特殊的存储区，主要功能是暂时存放数据和地址，通常用来保护断点和现场。
+堆栈是在片内RAM中专门开辟出来的一个区域，数据的存取是以“后进先出”的结构方式处理的。实质上，堆栈就是一个按照“后进先出”原则组织的一段内存区域。
+*/
+</code></pre>
+<p>54.请简述以下移位操作代码的含义及其等效写法</p>
+<pre><code class="c">P1 = P1 &lt;&lt; 2;
+P1 = P1 &gt;&gt; 3;
+/*
+1、 P1 &lt;&lt;= 2 ,表示P1左移2位，左移一位相当于乘以2
+2、 P1 &gt;&gt;= 3 ，表示P1右移3位，右移一位相当于除以2
+*/
+</code></pre>
+<p>55.请简述键盘工作方式有哪些？</p>
+<pre><code class="c">/*
+1、编程扫描方式
+2、定时扫描方式
+3、中断方式
+还可以专门设计一个IO口用来进行双功能键的设计(上档键和下档键)
+*/
+</code></pre>
+<p>56.请问进程和线程有什么区别？</p>
+<pre><code class="c">/*
+1、进程是资源分配的最小单位
+2、线程是程序执行的最小单元，也是处理器调度的基本单位，但进程不是，两者均可并发执行；
+3、进程有自己的独立地址空间，每启动一个进程，系统就会
+为它分配地址空间,建立数据表来维护代码段、堆栈段和数据段
+这种操作非常昂贵。而线程是共享进程中的数据，使用相同的
+地址空间，因此，CPU切换一个线程的花费远比进程小很多,同
+时创建一个线程的开销也比进程小很多
+4、由于同一进程中的多个线程具有相同的地址空间，致使它们之间的同步和通信的实现，也变得比较容易。进程间通信IPC，线程间可以直接读写进程数据段（如全局变量）来进行通信——需要进程同步和互斥手段的辅助，以保证数据的一致性。在有的系统中，线程的切换、同步和通信都无须操作系统内核的干预
+*/
+</code></pre>
+<p>57.请问进程和线程都有什么优缺点？</p>
+<pre><code class="c">/*
+1、线程执行的开销少，但是不利于资源的管理与保护。线程适合在SMP机器(双CPU系统)上运行。
+2、进程执行的开销大，但是能够很好的进行资源管理和保护，可以跨机器迁移。
+*/
+</code></pre>
+<p>58.请问何时使用多进程，何时使用多线程？</p>
+<pre><code class="c">/*
+对资源的管理和保护要求高，不限制开销和效率时，使用多进程。
+要求效率高，频繁切换时，资源的保护管理要求不是很高时，使用多线程。
+*/
+</code></pre>
+<p>59.请问线程是否具有相同的堆栈？</p>
+<pre><code class="c">/*
+真正的程序执行的都是线程来完成的，程序启动的时候操作系统就帮你创建了一个主线程。
+每个线程有自己的堆栈。
+*/
+</code></pre>
+<p>60.单片机使用外部中断时应该注意什么？</p>
+<pre><code class="c">/*
+把某个引脚设置为外部中断功能后，该引脚为输入模式，由于没有
+内部上拉电阻，所以必须外接一个上拉电阻，确保引脚不被悬空；
+除了引脚连接模块的设置，还需要设置VIC模块，才能产生外部中断，
+否则外部中断只能反映在EXTINT寄存器中，要使器件进入掉电模式
+并通过外部中断唤醒，软件应该正确设置引脚的外部中断功能，再进
+入掉电模式。
+*/
+</code></pre>
+
+    </div>
+
+</div>
+                <div class="footer">
+    <span>Copyright © 2022 桃之夭夭 灼灼其华</span>
+    <span>Theme Designed By <a target="_blank" href="https://zheli.design/one-paper">這Li</a></span>
+</div>
+
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    </body>
+</html>
