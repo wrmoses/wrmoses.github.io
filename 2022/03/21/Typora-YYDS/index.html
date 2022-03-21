@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>桃之夭夭 灼灼其华 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">桃之夭夭 灼灼其华</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            Typora_YYDS
+        </div>
+        <div class="post-meta">
+            2022-03-21
+        </div>
+    
+
+    <div class="post-md">
+        <h1 id="markdown"><a href="#markdown" class="headerlink" title="markdown"></a>markdown</h1><h2 id="插入代码段"><a href="#插入代码段" class="headerlink" title="插入代码段"></a>插入代码段</h2><pre><code class="markdown">​```+语言名
+</code></pre>
+<h2 id="插入表情"><a href="#插入表情" class="headerlink" title="插入表情"></a>插入表情</h2><pre><code class="markdown">:smile
+</code></pre>
+<p>:smile:</p>
+<p>:angry:</p>
+<h2 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h2><pre><code class="markdown">|第一列|第二列|  ctrl_enter建立新的一行
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h2><pre><code class="markdown">*** or ---
+</code></pre>
+<hr>
+<hr>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><pre><code class="markdown">&gt; 引注1
+&gt; ···
+&gt; 引注2
+&gt;还有一行，双按换行键跳出引注模式
+</code></pre>
+<blockquote>
+<p>引注1<br>···<br>引注2<br>还有一行，双按换行键跳出引注模式</p>
+</blockquote>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/">https://www.bilibili.com/</a></p>
+<p>(直接输入网址就行)</p>
+<h2 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h2><pre><code class="text">![图片名称](http://图片网址)
+</code></pre>
+<p><img src="https://www.google.com.sg/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="png"></p>
+<h2 id="产生目录"><a href="#产生目录" class="headerlink" title="产生目录"></a>产生目录</h2><pre><code class="markdown">[TOC]
+</code></pre>
+<p>[TOC]</p>
+<h2 id="流程图绘制"><a href="#流程图绘制" class="headerlink" title="流程图绘制"></a>流程图绘制</h2><pre><code class="markdown">​```mermaid
+            graph TD;
+                A--&gt;B;
+                B--&gt;C;
+                A--&gt;D;
+                C--&gt;A;
+                流程图
+</code></pre>
+<pre><code class="mermaid">graph TD;
+    A--&gt;B;
+    B--&gt;C;
+    A--&gt;D;
+    C--&gt;A;
+</code></pre>
+<pre><code class="markdown">sequenceDiagram
+    Alice-&gt;&gt;John: Hello John, how are you?
+    John--&gt;&gt;Alice: Great!
+    时序图
+</code></pre>
+<pre><code class="mermaid">sequenceDiagram
+    Alice-&gt;&gt;John: Hello John, how are you?
+    John--&gt;&gt;Alice: Great!
+</code></pre>
+<pre><code class="markdown">stateDiagram
+    [*] --&gt; s1
+    s1 --&gt; s2
+    s2--&gt;[*]
+</code></pre>
+<pre><code class="mermaid">
+stateDiagram
+    [*] --&gt; s1
+    s1 --&gt; s2
+    s2--&gt;[*]
+</code></pre>
+<h2 id="甘特图"><a href="#甘特图" class="headerlink" title="甘特图"></a>甘特图</h2><pre><code class="mermaid">gantt
+    title this is a title
+    dateFormat YYYY-MM-DD
+    
+    section s1
+    task name1 : done,desA,2022-04-01,5d
+    task name2 : active,after desA,3d
+    task name3 : crit,2022-04-03,2022-04-07
+    
+    
+</code></pre>
+<pre><code class="markdown">gantt
+    title this is a title
+    dateFormat YYYY-MM-DD
+    section s1
+    task name1 : desA,2022-04-01,5d
+    task name2 : after desA,3d
+    task name3 : 2022-04-03,2022-04-07
+    
+task显示名 : 状态（可缺省） 任务名（可缺省） 开始时间（或任务位置） 延续时长（或结束时间）
+ task进度条有三种状态，&lt;default&gt;，done，active
+crit 关键任务
+</code></pre>
+
+    </div>
+
+</div>
+                <div class="footer">
+    <span>Copyright © 2022 桃之夭夭 灼灼其华</span>
+    <span>Theme Designed By <a target="_blank" href="https://zheli.design/one-paper">這Li</a></span>
+</div>
+
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    </body>
+</html>
