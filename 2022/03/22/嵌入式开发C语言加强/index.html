@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>桃之夭夭 灼灼其华 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">桃之夭夭 灼灼其华</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            嵌入式开发C语言加强
+        </div>
+        <div class="post-meta">
+            2022-03-22
+        </div>
+    
+
+    <div class="post-md">
+        <h1 id="嵌入式开发C语言加强"><a href="#嵌入式开发C语言加强" class="headerlink" title="嵌入式开发C语言加强"></a>嵌入式开发C语言加强</h1><h2 id="0-视频和源码对照表"><a href="#0-视频和源码对照表" class="headerlink" title="0. 视频和源码对照表"></a>0. 视频和源码对照表</h2><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>视频</th>
+<th>源码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>01_变量和指针</td>
+<td>01_var_pointer</td>
+</tr>
+<tr>
+<td>2</td>
+<td>02_sizeof和关键字</td>
+<td>02_print_sizeof<br>03_keyword</td>
+</tr>
+<tr>
+<td>3</td>
+<td>03_struct</td>
+<td>04_struct<br>05_struct_space</td>
+</tr>
+<tr>
+<td>4</td>
+<td>04_变量赋值</td>
+<td>06_var_give_val</td>
+</tr>
+<tr>
+<td>5</td>
+<td>05_通过指针赋值</td>
+<td>07_pointer_give_val</td>
+</tr>
+<tr>
+<td>6</td>
+<td>06_上午答疑</td>
+<td>08_question</td>
+</tr>
+<tr>
+<td>7</td>
+<td>07_结构体指针_函数指针</td>
+<td>09_struct_pointer<br>10_function_pointer<br>11_use_lcd_by_macro<br>12_use_lcd_by_type<br>13_use_lcd_by_function_pointer</td>
+</tr>
+<tr>
+<td>8</td>
+<td>08_下午答疑_关于指针</td>
+<td>14_questions_pointer</td>
+</tr>
+<tr>
+<td>9</td>
+<td>09_链表</td>
+<td>15_list</td>
+</tr>
+<tr>
+<td>10</td>
+<td>10_链表的插入操作</td>
+<td>16_list_insert</td>
+</tr>
+<tr>
+<td>11</td>
+<td>11_链表的删除操作</td>
+<td>17_list_remove</td>
+</tr>
+<tr>
+<td>12</td>
+<td>12_ARM架构和汇编初步体验</td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>13_全局变量的初始化和栈的引入</td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td>14_局部变量的初始化</td>
+<td>18_stack</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="1-变量与指针"><a href="#1-变量与指针" class="headerlink" title="1. 变量与指针"></a>1. 变量与指针</h2><p><strong>2个口诀：</strong></p>
+<ul>
+<li>变量变量，能变，就是能读能写，必定在内存里</li>
+<li>指针指针，保存的是地址，32位处理器中地址都是32位的，无论是什么类型的指针变量，都是4字节  4Byte</li>
+</ul>
+<h2 id="2-变量赋值"><a href="#2-变量赋值" class="headerlink" title="2. 变量赋值"></a>2. 变量赋值</h2><h3 id="2-1-简单的变量赋值"><a href="#2-1-简单的变量赋值" class="headerlink" title="2.1 简单的变量赋值"></a>2.1 简单的变量赋值</h3><pre><code class="c">int a;
+a = 1;
+a = &#39;A&#39;;
+</code></pre>
+<h3 id="2-2-关键字"><a href="#2-2-关键字" class="headerlink" title="2.2 关键字"></a>2.2 关键字</h3><ul>
+<li><p>volatile</p>
+<p>​    减少对变量的优化  </p>
+<pre><code class="c">volatile int a;
+a=1;
+a=2;
+</code></pre>
+</li>
+<li><p>const</p>
+<p>​    定义常量，只读。一般存储在flash里，（优化可能存储在RAM）</p>
+</li>
+<li><p>static</p>
+<pre><code class="c">//作用域
+static int a;//只在该.C文件下有效
+int a;//在整个项目下有效
+// 同时存在时 自己有用自己的，自己没有用全局的
+</code></pre>
+</li>
+<li><p>extern</p>
+<pre><code class="c">//外部函数、外部变量、声明指令
+extern int a;//a 在外部其他文件中已定义，在该文件中使用外部的变量
+----
+int a = 0;
+extern int a = 1;//语法错误
+</code></pre>
+</li>
+</ul>
+<h3 id="2-2-引入结构体、结构体赋值"><a href="#2-2-引入结构体、结构体赋值" class="headerlink" title="2.2 引入结构体、结构体赋值"></a>2.2 引入结构体、结构体赋值</h3><blockquote>
+<p>why use struct？</p>
+</blockquote>
+<pre><code class="c">struct person &#123;
+    char *name;
+    int age;
+&#125;
+struct company&#123;
+    char name[3];
+    struct person worker[100];
+&#125;
+    
+struct person wang = &#123;&quot;wr&quot;,20&#125;;
+</code></pre>
+<pre><code class="c">// char p[]  &amp;  char *p
+// 从其声明的对象来说：
+char p[] = &quot;hello world!&quot;;
+//用来声明一个数组p，数组大小为12字节。
+char *p = &quot;hello world!&quot;;
+//用来声明一个指针p，指向“hello world!”字符串起始位置。
+  从存储位置来说：
+ char p[] = &quot;hello world!&quot;;//p数组作为局部变量被存储在栈区；
+ char *p = &quot;hello world!&quot;; 
+//在这个声明中，&quot;hello world!&quot;被存储在静态数据区，而且是全局的，p仅仅就是个指针，指向这个区域。
+</code></pre>
+<p><img src="/.com//image-20220317130621404.png"></p>
+<pre><code class="c">int a;
+a = 1;//写 4Byte
+a = &quot;A&quot;;// 隐含的类型转换 a = (int *)&quot;A&quot;,写 4BYTE
+
+//自定义类型 取个别名
+typdef struct stu &#123;
+    char * name;
+    int age;
+    struct stu * classmate;//4BYTE
+&#125; STU,* pSTU;
+
+//先用NULL赋初值，再
+stu1.classmate = &amp; stu2;
+stu1.classmate = &amp; stu2;
+
+struct stu student1;
+STU student1;
+</code></pre>
+<h3 id="2-3-类型转换"><a href="#2-3-类型转换" class="headerlink" title="2.3 类型转换"></a>2.3 类型转换</h3><p>int &lt;&#x3D;&#x3D;&#x3D; char</p>
+<p>struct &lt;&#x3D;&#x3D;&#x3D; struct pointer</p>
+<h3 id="2-4-指针、函数指针"><a href="#2-4-指针、函数指针" class="headerlink" title="2.4 指针、函数指针"></a>2.4 指针、函数指针</h3><pre><code class="c">a = 123;
+(p = &amp;a ; *p = 123)
+</code></pre>
+<p><img src="/.com//image-20220317160421540.png"></p>
+<pre><code class="c">struct person wei = &#123;&quot;bob&quot;,32&#125;;
+struct person * pt;
+pt = &amp;wei;
+wei.age = 33;
+pt-&gt;age = 33;//  -&gt; 指向的
+
+结构体指针
+    
+</code></pre>
+<pre><code class="c">//函数指针
+void add(int a ,int b);
+void (* add)(int a,int b);
+
+//add 与 &amp;add效果相同
+typdef struct stu &#123;
+    char * name;
+    int age;
+    void (* talent)(void);
+    struct stu * classmate;//4BYTE
+&#125; STU,*pSTU;
+
+STU ming = &#123;&quot;ming&quot;,11,sing,&amp;lili&#125;;
+ming.talent();  
+</code></pre>
+<h2 id="3-链表操作"><a href="#3-链表操作" class="headerlink" title="3. 链表操作"></a>3. 链表操作</h2><pre><code class="c">typedef struct spy&#123;
+    char *name;
+    struct spy *next;
+&#125;spy,*p_spy;
+
+spy = &#123;&quot;A&quot;,NULL&#125;;
+spy = &#123;&quot;B&quot;,NULL&#125;;
+spy = &#123;&quot;C&quot;,NULL&#125;;
+
+p_spy head = NULL;//NULL = 0X0000
+A.next = &amp;B;
+B.next = &amp;C;
+C.next = NULL;
+head = &amp;A;
+
+while(head)&#123;          //head == NULL 会自动退出
+    head-&gt;name;//print
+    head = head-&gt;next;
+&#125;
+//链表插入操作
+void insert_spy(p_spy new_spy)&#123;
+    p_spy last;
+    if(head = NULL)&#123;
+        head = newspy;
+        newspy-&gt;next = NULL;
+    &#125;
+    else&#123;
+        last = head;
+        while(last)&#123;
+            if(last-&gt;next == NULL)&#123;
+                break;
+            &#125;
+            else&#123;
+                last = last-&gt;next;
+            &#125;
+            last-&gt;next = newspy;
+        &#125;
+    &#125;
+&#125;
+//链表的删除操作
+//left-&gt;next = right
+void remove_spy(p_spy old_spy)&#123;
+    p_spy left;
+    if(head == old_spy)&#123;
+        head = old_spy-&gt;next;
+    &#125;
+    else&#123;
+        left = head;
+        while(left)&#123;
+            if(left-&gt;next == old_spy)&#123;
+                break;
+            &#125;
+            else&#123;
+                left = left-&gt;next;
+            &#125;
+        &#125;
+        if(left)&#123;
+            left-&gt;next = old_spy-&gt;next;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="4-ARM架构"><a href="#4-ARM架构" class="headerlink" title="4. ARM架构"></a>4. ARM架构</h2><pre><code class="c">int a = 1;
+int b = 2;
+a = a + b;
+</code></pre>
+<p><img src="/.com//01_risc.png"></p>
+<p><img src="/.com//02_risc_calc.png"></p>
+<h2 id="5-几条汇编指令"><a href="#5-几条汇编指令" class="headerlink" title="5. 几条汇编指令"></a>5. 几条汇编指令</h2><ul>
+<li>load      读的指令</li>
+<li>store     写的指令</li>
+<li>B、BL    跳转指令</li>
+<li>add、sub    加&#x2F;减运算指令</li>
+<li>and&#x2F;bic       与运算&#x2F;清除数据</li>
+</ul>
+<h2 id="6-几个核心问题"><a href="#6-几个核心问题" class="headerlink" title="6. 几个核心问题"></a>6. 几个核心问题</h2><ul>
+<li><p>有值的全局变量的初始化</p>
+<ul>
+<li>类似memcpy，把Flash上的数据段，整体拷贝到RAM</li>
+</ul>
+</li>
+<li><p>初始值为0、没有初始化的全局变量，怎么初始化？</p>
+<ul>
+<li>有100万个这样的变量</li>
+<li>这100万个变量，都保存在Flash上吗？&#x2F;&#x2F;在RAMZI段，memset全部清零</li>
+<li>这些变量在内存里都放在ZI段</li>
+<li>类似memset，把ZI段全部清零</li>
+</ul>
+</li>
+<li><p>才去调用main函数 &#x2F;&#x2F;此时全局变量已经初始化完成</p>
+</li>
+<li><p>局部变量在哪？</p>
+</li>
+<li><p>局部变量的初始化</p>
+</li>
+<li><p>栈的作用</p>
+<blockquote>
+<p>栈</p>
+<p>一块空闲的RAM，sp指针</p>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+</div>
+                <div class="footer">
+    <span>Copyright © 2022 桃之夭夭 灼灼其华</span>
+    <span>Theme Designed By <a target="_blank" href="https://zheli.design/one-paper">這Li</a></span>
+</div>
+
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    </body>
+</html>
