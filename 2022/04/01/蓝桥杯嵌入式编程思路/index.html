@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>桃之夭夭 灼灼其华 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">桃之夭夭 灼灼其华</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            蓝桥杯嵌入式编程思路
+        </div>
+        <div class="post-meta">
+            2022-04-01
+        </div>
+    
+
+    <div class="post-md">
+        <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Y94y1f7ZY?spm_id_from=333.880.my_history.page.click">https://www.bilibili.com/video/BV1Y94y1f7ZY?spm_id_from=333.880.my_history.page.click</a></p>
+<blockquote>
+<p>分而治之，红叶传情</p>
+<p>每个模块只做自己擅长的事情，模块之间通过红叶传书</p>
+</blockquote>
+<p>主要函数位置</p>
+<p>1.main函数while(1)前</p>
+<p>2.while（1）中</p>
+<p>3.中断函数</p>
+<blockquote>
+<p>建议：</p>
+<p>1.变量命名与题目结合、便于理解</p>
+<p>2.主要变量的赋值用宏定义</p>
+<p>3.所有变量一定要赋初值</p>
+</blockquote>
+<p>必考：</p>
+<p>1.按键</p>
+<p>2.LCD</p>
+<p>3.LED</p>
+<p>高频考点：</p>
+<p>1.EEPROM</p>
+<p>2.ADC</p>
+<p>3.PWM</p>
+<p>偶尔考点：</p>
+<p>1.RTC</p>
+<p>2.串口</p>
+<p>常用函数</p>
+<pre><code class="c">// GPIO
+（数值）HAL_GPIO_ReadPin  ( GPIO_TypeDef *  GPIOx,uint16_t  GPIO_Pin)；读取端口电平
+void  HAL_GPIO_WritePin (GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, GPIO_PinState PinState) ；写端口1或0（set是1，reset是0）
+void  HAL_GPIO_TogglePin (GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) ；翻转端口电平
+void  HAL_GPIO_EXTI_IRQHandler (uint16_t GPIO_Pin) ；处理中断
+HAL_StatusTypeDef  HAL_GPIO_LockPin (GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) ；锁定 gpio 引脚配置寄存器。
+void HAL_GPIO_Init (GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init)；按结构体中初始化IO口
+void HAL_GPIO_DeInit (GPIO_TypeDef *GPIOx, uint32_t GPIO_Pin);重置io口的初始化
+</code></pre>
+<pre><code class="c">//计数器
+HAL_TIM_Base_Start (TIM_HandleTypeDef *htim)；基础模式开启计时器
+HAL_TIM_Base_Stop (TIM_HandleTypeDef *htim)；基础模式停止计时器
+
+HAL_TIM_Base_Start_IT (TIM_HandleTypeDef *htim)；中断模式开启计时器
+HAL_TIM_Base_Stop_IT (TIM_HandleTypeDef *htim)；中断模式关闭计时器
+
+HAL_TIM_Base_Start_DMA (TIM_HandleTypeDef *htim, uint32_t *pData, uint16_t Length)；开启基础DMA
+HAL_TIM_Base_Stop_DMA (TIM_HandleTypeDef *htim)；关闭基础DMA
+
+HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)；计时器回调函数
+
+HAL_TIM_IC_Start (TIM_HandleTypeDef *htim, uint32_t Channel)；开启捕获计数器
+HAL_TIM_IC_Stop (TIM_HandleTypeDef *htim, uint32_t Channel)；关闭捕获计数器
+
+HAL_TIM_IC_Start_IT (TIM_HandleTypeDef *htim, uint32_t Channel)；中断模式下开启捕获计数器
+HAL_TIM_IC_Stop_IT (TIM_HandleTypeDef *htim, uint32_t Channel)；中断模式下关闭捕获计数器
+
+HAL_TIM_IC_CaptureCallback (TIM_HandleTypeDef *htim)；捕获计数器的回调函数
+
+（数值）__HAL_TIM_GET_COUNTER(TIM_HandleTypeDef *htim);获取寄存器上的值
+（数值）HAL_TIM_ReadCapturedValue (TIM_HandleTypeDef *htim, uint32_t Channel)；读取捕获寄存器上的值
+
+__HAL_TIM_SetCounter(TIM_HandleTypeDef *htim,0);设置计数器初始值
+
+
+HAL_TIM_PWM_Start (TIM_HandleTypeDef *htim, uint32_t Channel)；开启PWM
+HAL_TIM_PWM_Stop (TIM_HandleTypeDef *htim, uint32_t Channel)；关闭PWM
+
+HAL_TIM_PWM_Start_IT (TIM_HandleTypeDef *htim, uint32_t Channel);中断模式下开启PWM
+HAL_TIM_PWM_Stop_IT (TIM_HandleTypeDef *htim, uint32_t Channel);中断模式下关闭PWM
+
+__HAL_TIM_SetCompare(&amp;htim3, TIM_CHANNEL_1, pwmVal);调占空比
+</code></pre>
+<pre><code class="c">//ADC DAC
+HAL_ADC_Start (ADC_HandleTypeDef *hadc)；开启ADC
+HAL_ADC_Stop (ADC_HandleTypeDef *hadc)；关闭ADC
+
+HAL_ADC_Start_IT (ADC_HandleTypeDef *hadc)；在中断模式下开启ADC
+HAL_ADC_Stop_IT (ADC_HandleTypeDef *hadc)；在中断模式下关闭ADC
+
+（数值）HAL_ADC_GetValue (ADC_HandleTypeDef *hadc);获取ADC数值
+
+HAL_DAC_SetValue(&amp;hdac1, DAC_CHANNEL_1,DAC_ALIGN_12B_R,temp);设置输出电压
+</code></pre>
+<pre><code class="c">//UART
+HAL_USART_Transmit (USART_HandleTypeDef *husart, uint8_t *pTxData, uint16_t Size, uint32_t Timeout)；在阻塞模式下发送大量数据
+HAL_USART_Receive (USART_HandleTypeDef *husart, uint8_t *pRxData, uint16_t Size, uint32_t Timeout)；在阻塞模式下接收大量数据
+HAL_USART_TransmitReceive (USART_HandleTypeDef *husart, uint8_t *pTxData, uint8_t *pRxData, uint16_t Size, uint32_t Timeout)；全双工以阻塞模式发送和接收大量数据
+
+HAL_USART_Transmit_IT (USART_HandleTypeDef *husart, uint8_t *pTxData, uint16_t Size)；在中断模式下发送大量数据
+HAL_USART_Receive_IT (USART_HandleTypeDef *husart, uint8_t *pRxData, uint16_t Size)；在中断模式下接收大量数据
+HAL_USART_TransmitReceive_IT (USART_HandleTypeDef *husart, uint8_t *pTxData, uint8_t *pRxData, uint16_t Size)；全双工以中断模式发送和接收大量数据
+
+HAL_UART_Transmit (UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout)；发送uart
+HAL_UART_Receive (UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout)；接收uart
+
+HAL_UART_Transmit_IT (UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size)；中断模式发送uart
+HAL_UART_Receive_IT (UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size)；中断模式接收uart
+
+HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)；回调函数
+</code></pre>
+<pre><code class="C">//SPI
+HAL_SPI_Transmit (SPI_HandleTypeDef *hspi, uint8_t *pData, uint16_t Size, uint32_t Timeout)；spi发送
+HAL_SPI_Receive (SPI_HandleTypeDef *hspi, uint8_t *pData, uint16_t Size, uint32_t Timeout)；spi接收
+
+HAL_SPI_TransmitReceive (SPI_HandleTypeDef *hspi, uint8_t *pTxData, uint8_t *pRxData, uint16_t Size, uint32_t Timeout)；发送和接收双工模式
+
+HAL_SPI_Transmit_IT (SPI_HandleTypeDef *hspi, uint8_t *pData, uint16_t Size)；中断模式下发送
+HAL_SPI_Receive_IT (SPI_HandleTypeDef *hspi, uint8_t *pData, uint16_t Size)；中断模式下接收
+</code></pre>
+<h2 id="TIPS"><a href="#TIPS" class="headerlink" title="TIPS"></a>TIPS</h2><p>1.利用按键检测中断函数产生定时</p>
+<pre><code class="c">tim3_callback()&#123;   //10ms
+    timer_200ms++;
+&#125;
+
+if(timer_200ms==20)&#123;  // 这样可以吗? 显然不行  timer_200ms &gt;= 20 !!!
+    function();
+&#125;
+</code></pre>
+<p>2.LCD模块与LED引脚共用问题</p>
+<pre><code class="c">/*
+LCD模块与LED共用 PC8 - PC15脚
+故需要锁存器 74HC53XXX
+锁存器 LE 脚 低电平时处于锁存状态，LED状态不会改变
+
+在给所有LED引脚赋值后立即给LE一个上升沿脉冲
+
+*/
+</code></pre>
+
+    </div>
+
+</div>
+                <div class="footer">
+    <span>Copyright © 2022 桃之夭夭 灼灼其华</span>
+    <span>Theme Designed By <a target="_blank" href="https://zheli.design/one-paper">這Li</a></span>
+</div>
+
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    </body>
+</html>
