@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>桃之夭夭 灼灼其华 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">桃之夭夭 灼灼其华</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            蓝桥杯嵌入式终极版
+        </div>
+        <div class="post-meta">
+            2022-05-13
+        </div>
+    
+
+    <div class="post-md">
+        <h2 id="1、LED"><a href="#1、LED" class="headerlink" title="1、LED"></a>1、LED</h2><pre><code class="C">// 注意     LED低电平亮    PD2给一个 1--&gt;0
+// PD2初始化 PD2 = 0
+
+HAL_GPIO_WritePin(GPIOC, GPIO_PIN_14, 0);
+HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, 1);
+HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, 0);   
+</code></pre>
+<h2 id="2、按键"><a href="#2、按键" class="headerlink" title="2、按键"></a>2、按键</h2><pre><code class="C">// 按下时为 0   不按为 1
+// 按键 GPIO需要 上拉
+// 记得启动计时器 两个地方！
+#define B1 HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_0)
+#define B2 HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_1)
+#define B3 HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_2)
+#define B4 HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_0)
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+    &#123;
+      if(htim-&gt;Instance == TIM3)
+      &#123;
+        switch(keys_status)
+        &#123;
+            case 0:
+                if((B1==0)||(B2==0)||(B3==0)||(B4==0))&#123;
+                    keys_status = 1;
+                &#125;
+                break;
+            case 1:
+                if((B1==0)||(B2==0)||(B3==0)||(B4==0))&#123;
+                    keys_status = 2;
+                    if(B1==0)&#123;
+                        pressed_key_index = 1;
+                    &#125;
+                     if(B2==0)&#123;
+                        pressed_key_index = 2;
+                    &#125;
+                    if(B3==0)&#123;
+                        pressed_key_index = 3;
+                    &#125;
+                    if(B4==0)&#123;
+                        pressed_key_index = 4;
+                    &#125;
+                &#125;
+                else&#123;
+                    keys_status = 0;
+                &#125;
+                break;
+            case 2:
+                if((B1==0)||(B2==0)||(B3==0)||(B4==0))&#123;
+                    
+                &#125;
+                else&#123;
+                    keys_status = 0;
+                &#125;
+                break;
+            default:
+                break;
+        &#125;
+      &#125;
+    HAL_TIM_Base_Start_IT(&amp;htim3);
+    &#125;
+HAL_TIM_Base_Start_IT(&amp;htim3);//记得开计时器中断
+//回调函数结束时重新开中断
+</code></pre>
+<h2 id="3、LCD"><a href="#3、LCD" class="headerlink" title="3、LCD"></a>3、LCD</h2><pre><code class="c">// 略
+//注意显示字符串的长度
+单字节高亮
+主要用到这个函数
+    void LCD_DisplayChar(u8 Line, u16 Column, u8 Ascii);
+
+LCD_SetBackColor(Yellow);
+LCD_DisplayChar(Line4,(320 - (16 * 10)),&#39;a&#39;);
+LCD_SetBackColor(White);
+</code></pre>
+<h2 id="4、USART"><a href="#4、USART" class="headerlink" title="4、USART"></a>4、USART</h2><pre><code class="c">//需要变换串口配置中的 PA9 PA10
+
+// 发送
+1. sprintf(str,&quot;%d test %d&quot;,num1,num2);//头文件#include &quot;stdio.h&quot;
+2. 
+    int fputc(int c,FILE *stream)&#123;
+    HAL_UART_Transmit(&amp;huart1,(unsigned char *)&amp;c,1,1000);
+    return 1;
+    &#125;
+
+printf(str);
+//接收
+//如何配置 记得开中断
+uint8_t RxBuffer[];
+HAL_UART_Receive_IT(&amp;huart1, RxBuffer, 1);//开启接收中断
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+&#123;
+//回调函数
+    //... RxBuffer ...
+    HAL_UART_Receive_IT(&amp;huart1,RxBuffer, 1);   //再开启接收中断
+&#125;
+
+static uint8_t cofirm_passward[3];
+static uint8_t re_passward[3];    
+    sscanf((char *)rxbuff,&quot;%1d%1d%1d-%1d%1d%1d&quot;,&amp;cofirm_passward[0],&amp;cofirm_passward[1],
+           &amp;cofirm_passward[2],&amp;re_passward[0],&amp;re_passward[1],&amp;re_passward[2]);
+
+  sscanf(&quot;2006:03:18&quot;, &quot;%d:%d:%d&quot;, a, b, c);
+    sscanf(&quot;2006:03:18 - 2006:04:18&quot;, &quot;%s - %s&quot;, sztime1, sztime2);
+</code></pre>
+<h2 id="5、AT24C02-iic"><a href="#5、AT24C02-iic" class="headerlink" title="5、AT24C02  iic"></a>5、AT24C02  iic</h2><pre><code class="c">//记得初始化I2C
+//记得延迟
+void Write_AT24c02(unsigned char add,unsigned char data1)
+&#123;
+    I2CStart();
+    I2CSendByte(0xa0);
+    I2CWaitAck();
+    I2CSendByte(add);
+    I2CWaitAck();
+    I2CSendByte(data1);
+    I2CWaitAck();
+    I2CStop();
+&#125;
+
+unsigned char Read_AT24c02(unsigned char add)
+&#123;
+    unsigned char temp;
+    I2CStart();
+    I2CSendByte(0xa0);
+    I2CWaitAck();
+    I2CSendByte(add);
+    I2CWaitAck();
+    I2CStart();
+    I2CSendByte(0xa1);
+    I2CWaitAck();
+    temp=I2CReceiveByte();
+    I2CWaitAck();
+    I2CStop();
+    return temp;
+&#125;
+</code></pre>
+<h2 id="6、ADC"><a href="#6、ADC" class="headerlink" title="6、ADC"></a>6、ADC</h2><pre><code class="c">//配置
+//4096  12位adc
+HAL_ADC_Start (ADC_HandleTypeDef *hadc);//开启ADC
+（数值）HAL_ADC_GetValue (ADC_HandleTypeDef *hadc);//获取ADC数值
+</code></pre>
+<h2 id="7、TIM-重点"><a href="#7、TIM-重点" class="headerlink" title="7、TIM(重点)"></a>7、TIM(重点)</h2><h3 id="a-中断-按键检测"><a href="#a-中断-按键检测" class="headerlink" title="a.中断(按键检测)"></a>a.中断(按键检测)</h3><pre><code class="c">//
+HAL_TIM_Base_Start_IT(&amp;htim3);
+    
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)&#123;
+    if(htim-&gt;Instance==TIM3)&#123;
+      HAL_TIM_Base_Start_IT(&amp;htim3);   
+    &#125;  
+&#125;
+</code></pre>
+<h3 id="b-PWM输出"><a href="#b-PWM输出" class="headerlink" title="b.PWM输出"></a>b.PWM输出</h3><pre><code class="c">// 配置频率
+HAL_TIM_PWM_Start (TIM_HandleTypeDef *htim, uint32_t Channel)//开启PWM
+__HAL_TIM_SetCompare(&amp;htim3, TIM_CHANNEL_1, pwmVal)//调占空比
+ 
+    TIM3-&gt;PSC = 80*psc-1;
+    TIM3-&gt;ARR = 19999; 
+    TIM3-&gt;EGR = TIM_EGR_UG;   //三句话改频率
+    
+HAL_TIM_PWM_Stop (TIM_HandleTypeDef *htim, uint32_t Channel)//关闭PWM
+</code></pre>
+<h3 id="c-捕获计数器"><a href="#c-捕获计数器" class="headerlink" title="c.捕获计数器"></a>c.捕获计数器</h3><pre><code class="c">//如何配置
+
+uint32_t  cc1_value_2 = 0;                                      // TIMx_CCR1 µÄÖµ 
+uint32_t  f40 = 0;
+
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+&#123;
+
+    cc1_value_2 =__HAL_TIM_GET_COUNTER(&amp;htim2);
+    __HAL_TIM_SetCounter(&amp;htim2,0);
+    f40 = 1000000/cc1_value_2;
+    HAL_TIM_IC_Start_IT(&amp;htim2, TIM_CHANNEL_1);
+&#125;
+</code></pre>
+<h2 id="RTC"><a href="#RTC" class="headerlink" title="RTC"></a>RTC</h2><pre><code class="C">RTC_TimeTypeDef  H_S_M_Time; // 时间结构体
+RTC_DateTypeDef  Y_M_D_Data; // 日期结构体
+
+// 获取日期和时间必须同时使用，注意这里的编码方式选择二进制，可以直接使用
+    // 若选择BCD编码，需要自己处理数据
+    HAL_RTC_GetTime(&amp;hrtc, &amp;H_S_M_Time,RTC_FORMAT_BIN);
+    HAL_RTC_GetDate(&amp;hrtc, &amp;Y_M_D_Data,RTC_FORMAT_BIN);
+    sprintf((char *)Lcd_Display_String,&quot;TIME:%2d-%2d-%2d&quot;,H_S_M_Time.Hours,H_S_M_Time.Minutes,H_S_M_Time.Seconds);
+    LCD_DisplayStringLine(Line0, Lcd_Display_String);
+</code></pre>
+
+    </div>
+
+</div>
+                <div class="footer">
+    <span>Copyright © 2022 桃之夭夭 灼灼其华</span>
+    <span>Theme Designed By <a target="_blank" href="https://zheli.design/one-paper">這Li</a></span>
+</div>
+
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    </body>
+</html>
