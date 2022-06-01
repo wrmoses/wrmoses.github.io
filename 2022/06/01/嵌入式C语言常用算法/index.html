@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <link rel="alternate icon" type="image/png" href="/img/favicon.png">
+    <title>桃之夭夭 灼灼其华 | </title>
+    
+<link rel="stylesheet" href="/css/reset.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/markdown.css">
+
+    
+<link rel="stylesheet" href="/css/fonts.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+    <body>
+        <div class="paper">
+            <div class="paper-main">
+                
+                    <div class="post-header">
+    <a class="logo" href="/">桃之夭夭 灼灼其华</a>
+    <a class="go-home" href="/">
+        <svg width="8" height="14" viewBox="0 0 8 14">
+            <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+</div>
+                
+                <div class="post-main">
+
+    
+        <div class="post-main-title">
+            嵌入式C语言常用算法
+        </div>
+        <div class="post-meta">
+            2022-06-01
+        </div>
+    
+
+    <div class="post-md">
+        <h1 id="嵌入式C语言常用算法"><a href="#嵌入式C语言常用算法" class="headerlink" title="嵌入式C语言常用算法"></a>嵌入式C语言常用算法</h1><p>[TOC]</p>
+<h3 id="1、冒泡排序"><a href="#1、冒泡排序" class="headerlink" title="1、冒泡排序"></a>1、冒泡排序</h3><pre><code class="c">/*
+将uchar niu[8]=&#123;1,28,8,4,100,79,89,11&#125;; 
+该算法用途：AD采样时采样20次，选一个中间值作为最终采样的值，可以采取该算法。
+    采用冒泡法进行排序；（两个for循环嵌套）；
+****************************************************
+编程思路：用最后一个数与前一个数比较，若比前一个数小
+则交换位置，然后再与前一个数比较，若比前一个数小再交换
+位置，知道比前一个数大或者已经在最前面！如此循环8次就可以排好循序！
+*/
+#include &lt;stdio.h&gt;
+#define uchar unsigned char
+uchar a,b,c,j,k;
+uchar nsd[8]=&#123;8,28,6,4,100,79,102,11&#125;;
+
+uchar maopao(uchar niu[8]);
+
+uchar maopao(uchar niu[8])
+&#123;
+    for(j=0;j&lt;8;j++)           //设置循环次数为8
+    &#123;
+        for(k=7;k&gt;j;k--)        //从最后一个数开始与前一个数比较                
+        &#123;
+            if(niu[k]&lt;niu[k-1])    //比前一个数小则交换位置
+            &#123;    
+                c=niu[k-1];
+                niu[k-1]=niu[k];
+                niu[k]=c;
+            &#125;    
+        &#125;
+    &#125;
+    return  0;//这条可以不要，空的
+&#125;
+
+void main()
+&#123;
+    maopao(nsd);
+    for(j=0;j&lt;8;j++)
+    &#123;
+        printf(&quot;%d\t&quot;,nsd[j]);          //输出排好的数列
+    &#125;
+        printf(&quot;\n&quot;);
+
+&#125;
+</code></pre>
+<h3 id="2、判断回文字符串"><a href="#2、判断回文字符串" class="headerlink" title="2、判断回文字符串"></a>2、判断回文字符串</h3><pre><code class="c">/*  检测字符串是否是回文：
+    abcba. 如果是返回1.如果不是：0
+***************************************************************************
+编程思路：用输入的字符串中的第一个字符与最后一个字符比较，若不相同则跳出比较
+ 当比较的次数与输入的字符个数的一半相等时 则认为是回文！
+*/
+
+#include &lt;stdio.h&gt;
+#define uchar unsigned char 
+uchar hw[20];
+void main()
+&#123;
+    uchar i,j;
+
+    printf(&quot;请连续输入字符串，按回车结束输入！\n&quot;);
+    for(i=0;i&lt;20;i++)                                    //设置输入 并记录输入个数为i
+    &#123;
+        scanf(&quot;%c&quot;,&amp;hw[i]);   
+        if(hw[i]==&#39;\n&#39;)                                  //输入回车时  结束输入    
+        &#123;
+            break;
+        &#125;   
+    &#125;
+    for(j=0;j&lt;i/2;j++)
+    &#123;
+        if(hw[j]!=hw[i-j-1]) //比较相对应的字符 若不相等 就跳出循环 
+                             //并记录相同的个数为j
+        &#123;
+            break;
+        &#125;
+    &#125;
+
+    if(j==i/2)               //比较输入个数与匹配次数从而判断是否为回文
+    &#123;
+        printf(&quot;您输入的字符串是回文\n&quot;);
+    &#125;
+    else
+    &#123;
+        printf(&quot;您输入的字符串不是回文\n&quot;);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="3、添加并排序"><a href="#3、添加并排序" class="headerlink" title="3、添加并排序"></a>3、添加并排序</h3><pre><code class="c">/*
+有一个已经排好序的数组。现输入一个数，要求按原来的规律将它插入数组中。
+************************************************************************
+编程思路：将输入值从左到右开始于数组比较，若小于或等于此数组元素，
+  则把输入值存到B数组的相应位置，再把A数组后面的元素传递到B数组相应的位置，
+  若输入值大于它则把A数组元素传递到B数组元素
+  相应位置，
+*/
+
+#include &lt;stdio.h&gt;
+
+#define uchar unsigned char
+#define uint unsigned int
+
+uchar a[10]=&#123;4,6,8,11,28,66,79,100,102&#125;,b[10];
+
+main()
+&#123;    
+    uint m;
+    uchar i=0,j,k;
+
+    printf(&quot;请输入一个数字！回车结束！\n&quot;);
+    scanf(&quot;%d&quot;,&amp;m);                           //输入值存m
+    for(j=0;j&lt;9;j++)                          //从数组左侧开始判断 
+    &#123;
+        if(m&lt;=a[j])                              //若输入值小于或等于此处数组元素 则把m赋值到b数组相应的位置 再跳出循环
+        &#123;    
+            b[j]=m;
+            break;
+        &#125;
+        else                                 //若输入值大于此处的数组元素 则把a数组中的元素传递到b的相对位置
+            b[j]=a[j];
+            i=i+1;                             //设置标志位 
+    &#125;
+    if(i==9)                                 //若输入值小于数组最大值 则把m赋值到第10个元素
+        b[i]=m;
+    else
+    &#123;
+        for(k=0;k&lt;(9-j);k++)                //数组元素从a传递到b数组
+        &#123;
+            b[j+k+1]=a[j+k];
+        &#125;
+    &#125;
+    for(k=0;k&lt;10;k++)                       //输出数组b
+        printf(&quot;%d\t&quot;,b[k]);
+&#125;
+</code></pre>
+<h3 id="4、合并字符串"><a href="#4、合并字符串" class="headerlink" title="4、合并字符串"></a>4、合并字符串</h3><pre><code class="c">/*
+把两个字符串连接
+编程思路：调用库函数，将一段字符串添加到另一段字符串后面
+*/
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt; 
+main() 
+&#123;
+    char a[40],b[20];
+
+    printf(&quot;请输入第一个字符串！回车结束！\n&quot;);
+    scanf(&quot;%s&quot;,&amp;a);                                  //输入第一段字符串
+    printf(&quot;请输入第二个字符串！回车结束！\n&quot;);
+    scanf(&quot;%s&quot;,&amp;b);                                 //输入第二段字符串
+    strcat(a,b);                                    //调用库函数实现字符串的连接
+    printf(&quot;输出如下所示：\n&quot;);
+    printf(&quot;%s\n&quot;,a);
+&#125; 
+</code></pre>
+<h3 id="5、判断闰年"><a href="#5、判断闰年" class="headerlink" title="5、判断闰年"></a>5、判断闰年</h3><pre><code class="c">/*
+    判断闰年 (闰年：二月有29天) 
+     编程思路：闰年能被4整除 而不能被100或者400整除
+*/
+#include &lt;stdio.h&gt;
+#define uint unsigned int
+
+void main()
+&#123;
+    uint a;
+    printf(&quot;请输入查询的年份！回车结束！\n&quot;);
+    scanf(&quot;%d&quot;,&amp;a);
+    if((a%400==0)||(a%4==0)&amp;&amp;(a%100!=0))           //设置闰年的条件 能被4整除 而不能被100或者400整除
+        printf(&quot;您查询的%d年是闰年！\n&quot;,a);
+    else
+        printf(&quot;您查询的%d年不是闰年！\n&quot;,a);
+&#125;
+</code></pre>
+<h3 id="6、查找字符串"><a href="#6、查找字符串" class="headerlink" title="6、查找字符串"></a>6、查找字符串</h3><pre><code class="c">/*
+在一个现字符串中查找另一个字符串，如果找到返回匹配子字符的指针，没有找到返回空指针。
+编程思路：用原有字符串与输入的字符串逐一比较，若原字符中有一个字符与输入字符相同，则开始比较后面的字符是否也
+ 与输入的字符串一一对应，若有不对应的则跳出此次循环，再判断对比次数是否与输入字符串个数一致，若一致则认为找到对应字符串
+  并返回相应地址与长度
+*/
+#include &lt;stdio.h&gt;
+#define uchar unsigned char
+void main()
+&#123;
+    uchar a[]=&quot;qwertyuiopasdfghjklzxcvbnm1234567890&quot;,b[20],*sp,j,i,m=0,n;  //设置现有字符串
+
+    printf(&quot;请输入一段字符串！回车结束！\n&quot;);
+    for(j=0;j&lt;20;j++)
+    &#123;
+    scanf(&quot;%c&quot;,&amp;b[j]);                   //输入查找的字符串 并统计字符串个数为i
+    if(b[j]==&#39;\n&#39;)
+        break;
+    &#125;
+    sp=a;                                //设置指针指向
+    for(n=0;n&lt;36;n++)
+    &#123;
+        if(*sp==b[0])                    //若原字符串有一个字符与输入字符串第一字符相等 则进入循环
+        &#123;
+            for(i=0;i&lt;j;i++)            //设置比对次数
+            &#123;
+                if(*sp!=b[i])          //若不相同 则跳出循环 指针指向原字符串下一位
+                break;
+                sp=sp+1;
+            &#125;
+            if((i==j)&amp;&amp;(i&gt;1))          //若匹配的次数与输入字符串个数一致则认为 找到对应的字符串
+            &#123;    
+                printf(&quot;查找到相应字符串为第%d个开始的%d个字符里\n&quot;,n+1,i);
+            &#125;
+        &#125;
+        else
+            sp=sp+1;                 
+    &#125;
+    if((i!=j)||(i&lt;=1))
+        printf(&quot;无相应的字符串与之对应！\n&quot;);
+&#125;
+</code></pre>
+<h3 id="7、数字转字符串"><a href="#7、数字转字符串" class="headerlink" title="7、数字转字符串"></a>7、数字转字符串</h3><pre><code class="c">/*
+    把整数按照进制数转换为相应进制的字符串（要考虑符号），
+     比如 -1234，转换为 “-1234” ，支持10进制，16进制。
+      编程思路：先判断输入的整数的正负，若负数则取它相反数。将此数用短除法分别计算出10进制与16进制
+       的结果 再输出。
+*/
+
+#include &lt;stdio.h&gt;
+
+#define uchar unsigned char
+
+void main()
+&#123;
+    int a,b[20],c;
+    uchar i=0;
+    char j;           //j一定为有符合的数 因为j--最后是负数 
+
+    printf(&quot;请输入！回车结束！\n&quot;);
+    scanf(&quot;%d&quot;,&amp;a);           //输入一个整数
+    
+    c=a;
+    if(c&gt;=0)              //判断正负
+    &#123;
+        do
+        &#123;                  //用短除法计算10进制的结果 存入数组
+            b[i]=c%10;
+            c=c/10;
+            i=i+1;
+        &#125;while(c!=0);
+        for(j=i-1;j&gt;=0;j--)    
+            printf(&quot;%c&quot;,b[j]+48);      //输出结果 结果顺序 取反   输出的是字符 所有数字要加上48
+        printf(&quot;\n&quot;);
+    &#125;
+    else
+    &#123;
+        c=-c;                       //负数一样的求法
+        do
+        &#123;
+            b[i]=c%10;
+            c=c/10;
+            i=i+1;
+        &#125;while(c!=0);
+        for(j=i-1;j&gt;=0;j--)        
+            printf(&quot;%c&quot;,b[j]+48);        
+        printf(&quot;\n&quot;);
+    &#125;
+
+    i=0;
+    if(a&gt;=0)
+    &#123;
+        do
+        &#123;                           //用短除法计算16进制的结果 存入数组
+            b[i]=a%16;
+            a=a/16;
+            i=i+1;
+        &#125;while(a!=0);
+        printf(&quot;0x&quot;);
+        for(j=i-1;j&gt;=0;j--)
+        &#123;
+            if(b[j]&gt;9)
+                printf(&quot;%c&quot;,b[j]+87);          //输出结果 结果顺序 取反   输出的是字符 所有字母加87 数字要加上48
+            else
+                printf(&quot;%c&quot;,b[j]+48);
+        &#125;
+        printf(&quot;\n&quot;);
+    &#125;
+    else
+    &#123;
+        a=-a;                           //负数一样的求法
+        do
+        &#123;
+            b[i]=a%16;
+            a=a/16;
+            i=i+1;
+        &#125;while(a!=0);
+        printf(&quot;-0x&quot;);
+        for(j=i-1;j&gt;=0;j--)
+        &#123;
+            if(b[j]&gt;9)
+                printf(&quot;%c&quot;,b[j]+87);
+            else
+                printf(&quot;%c&quot;,b[j]+48);
+        &#125;
+        printf(&quot;\n&quot;);
+
+    &#125;
+&#125;
+</code></pre>
+<h3 id="8、求直角三角形斜边长度"><a href="#8、求直角三角形斜边长度" class="headerlink" title="8、求直角三角形斜边长度"></a>8、求直角三角形斜边长度</h3><pre><code class="c">/*
+    求直角三角形：  斜边长度L
+    求2个直角边：X,Y长度    正弦函数、余弦函数。
+编程思路：调用库函数，用sin和cos计算出直角边。
+*/
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+void main()
+&#123;
+    float a,b,R,L,r;
+
+    printf(&quot;请输入斜边长度：&quot;);
+    scanf(&quot;%f&quot;,&amp;L);
+    printf(&quot;请输入其中一斜角度数：&quot;);
+    scanf(&quot;%f&quot;,&amp;r);
+    R=r/180*3.1415926;               //计算弧度
+    a=sin(R)*L;                      //计算一直角边
+    b=cos(R)*L;                      //计算另一直角边
+    printf(&quot;%.2f\n&quot;,a);
+    printf(&quot;%.2f\n&quot;,b);
+&#125;    
+</code></pre>
+<h3 id="9、水仙花数"><a href="#9、水仙花数" class="headerlink" title="9、水仙花数"></a>9、水仙花数</h3><pre><code class="c">/*
+   打印出所有的“水仙花数”， 所谓“水仙花数”是指一个三位数，其各位数字立方和等于该数本身。
+     例如：153是一个“水仙花数”，
+     因为153=1的三次方＋5的三次方＋3的三次方。
+     1+125+27=126+27=153.
+     编程思路：将一个三位数的百位 十位 个位 分解出来 再 根据公式判断是否为水仙花数。
+*/
+
+#include &lt;stdio.h&gt;
+
+#define uchar unsigned char
+#define  uint unsigned int
+
+void main()
+&#123;
+    uchar j,k,m;
+    uint n,i=100;
+
+    printf(&quot;所有的水仙花如下：\n&quot;);
+    while(i&lt;1000)                         //设置循环判断所有的三位数
+    &#123;
+        j=i/100;                          //分解三位数的百位数出来
+        k=i%100/10;                       //分解三位数的十位数出来
+        m=i%100%10;                       //分解三位数的个位数出来
+        n=j*j*j+k*k*k+m*m*m;
+        if(n==i)                          //相等则输出水仙花
+        &#123;
+            printf(&quot;%d\t&quot;,i);
+            i=i+1;
+        &#125;
+        else
+            i=i+1;
+    &#125;    
+    printf(&quot;\n&quot;);
+&#125;
+</code></pre>
+<h3 id="10、阶乘"><a href="#10、阶乘" class="headerlink" title="10、阶乘"></a>10、阶乘</h3><pre><code class="c">/*
+1*2*3*4*5*...*n
+编程思路：阶乘，用1乘于一个变量，变量每乘一次自加一，再将结果成下一个变量，直到次数与输入数字一致为止。
+*/
+
+#include &lt;stdio.h&gt;
+
+#define uchar unsigned char
+#define uint unsigned int
+
+void main()
+&#123;
+    uchar i,m;
+    long a=1;
+    
+    printf(&quot;请输入一个整数！回车结束！\n&quot;);
+    scanf(&quot;%d&quot;,&amp;m);                             //输入一个数字
+    for(i=1;i&lt;m+1;i++)                          //设置相乘次数
+    &#123;
+        a=a*i;                                  //本次相乘结果是上一次结果*相乘次数
+    &#125;
+    printf(&quot;输出的结果为：\n&quot;);
+    printf(&quot;%d\n&quot;,a);
+&#125;
+</code></pre>
+<h3 id="11、打印圆"><a href="#11、打印圆" class="headerlink" title="11、打印圆"></a>11、打印圆</h3><pre><code class="c">/*
+   画实心圆
+          * * *
+        * * * * *
+        * * * * *
+        * * * * *
+          * * *
+
+           
+            ************
+           **************
+          ****************
+         ******************
+         ******************
+         ******************
+          ****************
+           **************
+            ************
+
+  编程思路：用for循环打印*  成为一个圆 或直接打印*成一个圆
+*/
+
+#include &lt;stdio.h&gt;
+
+#define uchar unsigned char
+
+void main()
+&#123;
+    uchar i,j,k;
+                             //用for循环打印 * 成一个圆
+    for(j=0;j&lt;4;j++)
+    &#123;
+        for(i=0;i&lt;3-j;i++)
+            printf(&quot; &quot;);
+        for(i=0;i&lt;12+2*j;i++)
+            printf(&quot;*&quot;);
+        printf(&quot;\n&quot;);
+    &#125;
+    for(i=0;i&lt;18;i++)
+        printf(&quot;*&quot;);
+    printf(&quot;\n&quot;);
+    for(j=0;j&lt;4;j++)
+    &#123;
+        for(i=0;i&lt;j;i++)
+            printf(&quot; &quot;);
+        for(i=0;i&lt;18-2*j;i++)
+            printf(&quot;*&quot;);
+        printf(&quot;\n&quot;);
+    &#125;
+    printf(&quot;\n&quot;);
+    printf(&quot;  * * *  \n&quot;);   //直接打印  * 成一个圆
+    printf(&quot;* * * * *\n&quot;);
+    printf(&quot;* * * * *\n&quot;);
+    printf(&quot;* * * * *\n&quot;);
+    printf(&quot;  * * *  \n&quot;);
+&#125;
+</code></pre>
+<h3 id="12、斐波拉契数列"><a href="#12、斐波拉契数列" class="headerlink" title="12、斐波拉契数列"></a>12、斐波拉契数列</h3><pre><code class="c">/*
+    有一对兔子，从出生后第3个月起每个月都生一对兔子，小兔子长到第三个月后每个月又生一对兔子，
+    假如兔子都不死，问每个月的兔子总数为多少？
+    编程思路：小   中  大  总数
+         1月  1对  0   0    1
+         2月  0    1   0    1
+         3月  1    0   1    2
+         4月  1    1   1    3
+         5月  2    1   2    5
+         规律：从第三个月开始 每个月总数 是上两月总数之后。
+*/
+
+#include &lt;stdio.h&gt;
+
+#define uchar unsigned char
+#define uint unsigned int
+
+void main()
+&#123;
+    uchar i,j=1,k=1;
+    uint m,n;
+
+    printf(&quot;请输入月份！回车结束！\n&quot;);
+    scanf(&quot;%d&quot;,&amp;i);                       //输入月份
+    if(i&gt;2)
+    &#123;
+        for(m=3;m&lt;=i;m++)                
+        &#123;
+            n=j+k;                    //n为本个月的总数
+            j=k;                      //j为上上个月总数
+            k=n;                      //k为上个月总数
+        &#125;
+        printf(&quot;%d\n&quot;,n*2);
+    &#125;
+    else
+        printf(&quot;2\n&quot;);
+&#125;
+</code></pre>
+<h3 id="13、素数"><a href="#13、素数" class="headerlink" title="13、素数"></a>13、素数</h3><pre><code class="c">/*
+判断101-200之间有多少个素数，并输出所有素数。
+判断素数的方法：用一个数分别去除2到sqrt(这个数)，如果能被整除， 则表明此数不是素数，反之是素数。
+编程思路：用一个数分别去除2到sqrt(这个数)，如果能被整除， 则表明此数不是素数，反之是素数。
+*/
+
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+#define uchar unsigned char
+
+void main()
+&#123;
+    uchar i,j,k;
+
+    for(i=101;i&lt;200;i+=2)
+    &#123;
+        j=sqrt(i);                 //求出算术平方根
+        for(k=2;k&lt;=j;k++)           //用判断的数 除以一个从2到算术平方根的数 若有被整除的 则跳出循环 此数不是素数
+        &#123;
+            if(i%k==0)
+                break;
+        &#125;
+        if(k&gt;=j+1)                //若都没被整除的数 则此数为素数 输出此数
+        &#123;
+            printf(&quot;%d\t&quot;,i);
+        &#125;
+    &#125;
+    printf(&quot;\n&quot;);
+&#125;
+</code></pre>
+<h3 id="14、统计字符"><a href="#14、统计字符" class="headerlink" title="14、统计字符"></a>14、统计字符</h3><pre><code class="c">/*
+输入一行字符，分别统计出其中英文字母、空格、数字和其它字符的个数。
+将输入的字符一一与ASCII的字符比较 若相符 则相应字符数加1.
+*/
+
+#include &lt;stdio.h&gt;
+
+#define uchar unsigned char
+
+void main()
+&#123;
+    uchar i,j,a[20],k=0,m=0,n=0,r=0;
+
+    printf(&quot;请输入一段字符串！回车结束！\n&quot;);
+    for(i=0;i&lt;20;i++)
+    &#123;
+        scanf(&quot;%c&quot;,&amp;a[i]);
+        if(a[i]==&#39;\n&#39;)
+            break;
+    &#125;
+    for(j=0;j&lt;i;j++)
+    &#123;
+        if(((&#39;A&#39;&lt;=a[j])&amp;&amp;(a[j]&lt;=&#39;Z&#39;))||((&#39;a&#39;&lt;=a[j])&amp;&amp;(a[j]&lt;=&#39;z&#39;))) //判断大小写英文字母
+            k=k+1;
+        else if((&#39;0&#39;&lt;=a[j])&amp;&amp;(a[j]&lt;=&#39;9&#39;))                          //判断数字
+            m=m+1;
+        else if(a[j]==32)                                          //判断空格
+            r=r+1;
+        else                                                       //其他字符
+            n=n+1;
+    &#125;
+    printf(&quot;字母共有%d个！\n&quot;,k);
+    printf(&quot;数字共有%d个\n&quot;,m);
+    printf(&quot;空格共有%d个\n&quot;,r);
+    printf(&quot;其他字符共有%d个\n&quot;,n);
+&#125;
+</code></pre>
+<h3 id="15、递归阶乘"><a href="#15、递归阶乘" class="headerlink" title="15、递归阶乘"></a>15、递归阶乘</h3><pre><code class="c">/*
+利用递归方法求5!
+编程思路：用递归法 
+*/
+
+#include &lt;stdio.h&gt;
+
+#define uchar unsigned char
+#define uint unsigned int
+
+long jc(uchar x);
+
+void main()
+&#123;
+    uchar i,j;
+    uint s;
+
+    printf(&quot;请输入所要求阶乘的数！回车结束！\n&quot;);
+    scanf(&quot;%d&quot;,&amp;j);
+    s=jc(j);                                         //调用递归函数
+    printf(&quot;结果为：%d\n&quot;,s);    
+&#125;
+
+long jc(uchar x)                                        
+&#123;
+    long m,n;
+    
+    if(x==0||x==1)                                  //输入为0或1的时候 输出结果为1
+        m=1;
+    else
+        m=x*jc(x-1);                               //递归调用
+    return m;                                      //返回函数值
+&#125;
+</code></pre>
+
+    </div>
+
+</div>
+                <div class="footer">
+    <span>Copyright © 2022 桃之夭夭 灼灼其华</span>
+    <span>Theme Designed By <a target="_blank" href="https://zheli.design/one-paper">這Li</a></span>
+</div>
+
+
+<link rel="stylesheet" href="/css/a11y-dark.min.css">
+
+
+<script src="/js/highlight.min.js"></script>
+
+
+<script src="/js/highlightjs-line-numbers.js"></script>
+
+
+<script>
+    hljs.initHighlightingOnLoad();
+    hljs.initLineNumbersOnLoad();
+</script>
+
+            </div>
+        </div>
+    </body>
+</html>
